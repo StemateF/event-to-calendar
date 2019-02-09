@@ -1,54 +1,45 @@
-import {queryString} from '../helpers'
+import {AbstractProvider} from './abstractProvider'
+import {oAuth} from "../helpers/oAuth";
+import {stringToHtml} from "../helpers";
 
-export default class Google {
-    constructor(eventDetails) {
-        console.log('google');
+
+const authorizationEndPoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+const scopes = [
+    'https://www.googleapis.com/auth/calendar.events'
+];
+export default class Google extends AbstractProvider {
+    constructor(eventDetails, providerData) {
+        super();
+        this.additionalData = providerData;
         this.eventDetails = eventDetails;
-        console.log(this);
+        this.auth = new oAuth(authorizationEndPoint, {
+            client_id: this.providerData.clientId,
+            redirect_uri: 'http://localhost:8080',
+            response_type: 'token',
+            scope: scopes
+        })
 
-        this.baseUri = 'https://calendar.google.com/calendar/r/eventedit?text=Joe%27s+40th+Birthday&details=Joe+turns+40+just+this+once&dates=20111212T190000/20111212T200000&location=Gillette+Stadium&sf=true';
-        this.baseUri = 'https://calendar.google.com/calendar/r/eventedit?'
     }
 
-    get calendarUrl() {
-        let params = {};
-
-        if (typeof this.eventDetails.title !== 'undefined') {
-            params.text = this.eventDetails.title
-        }
-        if (typeof this.eventDetails.location !== 'undefined') {
-            params.location = this.eventDetails.location
-        }
-
-        if (typeof this.eventDetails.description !== 'undefined') {
-            params.details = this.eventDetails.description
-        }
-        if (typeof this.eventDetails.timezone !== 'undefined') {
-            params.ctz = this.eventDetails.timezone
-        }
-        if (typeof  this.eventDetails.startDate !== 'undefined') {
-            params.dates = (new Date(this.eventDetails.startDate)).toISOString()
-                .replace(/-|:|\.\d\d\d/g, '')
-        }
-        if (typeof this.eventDetails.endDate !== 'undefined') {
-            params.dates += '/' + (new Date(this.eventDetails.endDate)).toISOString()
-                .replace(/-|:|\.\d\d\d/g, '')
-        }
-        let guestsString = '';
-        if (typeof this.eventDetails.guests !== 'undefined') {
-            guestsString = '&';
-            for (let guest in this.eventDetails.guests) {
-                if (this.eventDetails.guests.hasOwnProperty(guest)) {
-
-                    guestsString += 'add=' + this.eventDetails.guests[guest] + '&'
-                }
-            }
-        }
-
-        return (this.baseUri + queryString(params) + guestsString)
+    static get providerName() {
+        return 'google';
     }
 
+    get providerData() {
+        return this.additionalData;
+    }
+
+    /**
+     * @var  stringToHtml {HTMLElement}
+     */
     render() {
-        return `<li><a href="${this.calendarUrl}" target="_blank" rel="nofollow">Goggle</a></li>`
+        let htmlElem = stringToHtml(`<li>Google</li>`);
+        htmlElem.addEventListener('click', this.addEvent.bind(this));
+        return htmlElem
+    }
+
+    addEvent() {
+
+        this.auth.send();
     }
 }

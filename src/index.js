@@ -6,6 +6,11 @@ let elem = document.querySelector('#parent');
 let addToCalendar = new EventToCalendar(elem, {
     providers: [google],
     template: '<ul></ul>',
+    providersData: {
+        google: {
+            'clientId': '176041865393-kfpdv26puometn1fsqng870arss143fh.apps.googleusercontent.com'
+        }
+    },
     details: {
         title: 'title',
         description: 'description',

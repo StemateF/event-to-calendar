@@ -1,7 +1,15 @@
+/**
+ * @var providers
+ * @var template
+ * @var details
+ * @var  {object} providerData
+ */
+import {stringToHtml} from "./helpers";
+
 export default class EventToCalendar {
     constructor(element, options) {
         this.element = element;
-
+        this.providers = [];
         this.element.eventToCalendar = this;
         this.mergeOptions(options);
         this.init()
@@ -11,7 +19,9 @@ export default class EventToCalendar {
         let defaults = {
             providers: [],
             template: '',
-            details: {}
+            details: {},
+            providersData: {}
+
         };
 
         Object.entries(defaults).forEach((item) => {
@@ -21,25 +31,17 @@ export default class EventToCalendar {
         })
     }
 
-    stringToHtml(htmlString) {
-        let dummyTemplate = document.createElement('template');
-        htmlString.trim();
-        dummyTemplate.innerHTML = htmlString;
-
-        return dummyTemplate.content.firstElementChild
-    }
-
     renderParent() {
-        this.parentWrapper = this.stringToHtml(this.template);
+        this.parentWrapper = stringToHtml(this.template);
         this.element.append(this.parentWrapper)
     }
 
     renderProvider(provider, index) {
-        this.providers[index] = new provider(this.details);
+        this.providers[index] = new provider(this.details, this.providersData[provider.providerName]);
         let providerTemplate = this.providers[index].render();
 
         if (typeof providerTemplate === 'string') {
-            providerTemplate = this.stringToHtml(providerTemplate);
+            providerTemplate = stringToHtml(providerTemplate);
         }
 
         this.parentWrapper.append(providerTemplate);
