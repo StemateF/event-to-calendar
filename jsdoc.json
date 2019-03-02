@@ -1,0 +1,82 @@
+{
+  "tags": {
+    "allowUnknownTags": false
+  },
+  "source": {
+    "include": "./src",
+    "includePattern": ".js$",
+    "excludePattern": "(node_modules/|docs)"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ],
+  "opts": {
+    "template": "assets/template/docdash/",
+    "encoding": "utf8",
+    "destination": "docs/",
+    "recurse": true,
+    "verbose": true
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false
+  },
+  "docdash": {
+    "static": [
+      true
+    ],
+    "sort": [
+      true
+    ],
+    "sectionOrder": [
+      "Classes",
+      "Modules",
+      "Externals",
+      "Events",
+      "Namespaces",
+      "Mixins",
+      "Tutorials",
+      "Interfaces"
+    ],
+    "openGraph": {
+      "title": "eventToCalendar.js",
+      "type": "website",
+      "image": "",
+      "site_name": "eventToCalendar.js"
+    },
+    "meta": {
+      "title": "eventToCalendar.js - An open source Js library for generating add to calendar buttons",
+      "description": "eventToCalendar.js - An open source Js library for generating add to calendar buttons"
+    },
+    "search": [
+      true
+    ],
+    "collapse": [
+      false
+    ],
+    "wrap": [
+      true
+    ],
+    "typedefs": [
+      true
+    ],
+    "navLevel": [
+      3
+    ],
+    "private": [
+      false
+    ],
+    "removeQuotes": [
+      "none"
+    ],
+    "scripts": [],
+    "menu": {
+      "Project Website": {
+        "href": "https://github.com/StemateF/event-to-calendar",
+        "target": "_blank",
+        "class": "menu-item",
+        "id": "website_link"
+      }
+    }
+  }
+}

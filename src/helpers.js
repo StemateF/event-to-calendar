@@ -15,8 +15,8 @@
 
 /**
  *
- * @param htmlString {string}
- * @returns {{buildMeta?: {[p: string]: any}; exports?: true | string[]; id: number | string} | Element}
+ * @param htmlString
+ * @returns {Element}
  */
 export function stringToHtml(htmlString) {
     let dummyTemplate = document.createElement('template');

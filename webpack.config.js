@@ -9,7 +9,9 @@ module.exports = {
     },
     devServer: {
         contentBase: './',
-        overlay: true
+        overlay: true,
+        writeToDisk: true,
+
     },
 
     output: {

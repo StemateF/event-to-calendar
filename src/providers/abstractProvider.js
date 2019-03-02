@@ -1,7 +1,10 @@
+const PLUGIN_NAME = 'eventToCalendar';
+
 export class AbstractProvider {
     constructor() {
         this.providerData;
-        this.render()
+        this.render();
+        this.storageKey = [PLUGIN_NAME, this.constructor.providerName].join('.')
     }
 
     static get providerName() {

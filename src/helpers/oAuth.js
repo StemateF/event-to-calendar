@@ -1,11 +1,17 @@
 import {generateRandomId} from "../helpers";
 
+const now = () => {
+    return Math.round(new Date().getTime() / 1000)
+};
+
 export class oAuth {
-    constructor(authorizationEndPoint, requestBody) {
+    constructor(authorizationEndPoint, requestBody, storageKey) {
         this.autorizationEndPoint = authorizationEndPoint;
         this.params = requestBody;
         this.openedtab = null;
+        this.storageKey = storageKey;
         this.registerEvents();
+        this.consentPromise = {}
     }
 
     registerEvents() {
@@ -30,12 +36,37 @@ export class oAuth {
         return params;
     }
 
-    send() {
-        this.authorize()
+    send(endPoint, payload) {
+        console.log(JSON.stringify({resource: payload}));
+        this.authorize().then((token) => {
+            console.log('add that event');
+            fetch(endPoint, {
+                method: 'POST',
+                mode: "cors",
+                cache: "no-cache",
+                body: JSON.stringify(payload),
+                headers: new Headers({
+                    'Authorization': `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                })
+            }).then(response => {
+                console.log('eh');
+            })
+        })
     }
 
     authorize() {
-        this.request('POST', this.autorizationEndPoint, this.params)
+        //check if we have a valid token for all the required scopes
+        let alreadyRequiredToken = this.getToken(this.params.scope);
+        // if (alreadyRequiredToken) {
+        //     return new Promise(resolve => resolve(alreadyRequiredToken.token))
+        // }
+        this.request('POST', this.autorizationEndPoint, this.params);
+        return new Promise((resolve, reject) => {
+            this.consentPromise.resolve = resolve;
+            this.consentPromise.reject = reject
+        })
+
     }
 
     request(method, url, params) {
@@ -50,23 +81,35 @@ export class oAuth {
                 let inputElem = document.createElement('input');
                 inputElem.setAttribute('type', 'hidden');
                 inputElem.setAttribute('name', paramName);
-                inputElem.setAttribute('value', params[paramName]);
+                if (params[paramName].constructor === Array) {
+                    inputElem.setAttribute('value', params[paramName].join(' '));
+                } else {
+                    inputElem.setAttribute('value', params[paramName]);
+
+                }
 
                 form.append(inputElem);
             }
-
-
-            this.openConsentTab().querySelector('body').append(form);
+        }
+        let tab = this.openConsentTab();
+        if (tab) {
+            tab.querySelector('body').append(form);
             form.submit();
         }
     }
 
     openConsentTab() {
-        if (this.openedtab === null) {
+        let returnVal;
+        if (this.openedtab === null || this.openedtab.window === null) {
             this.openedtab = open('', 'windowName', 'width=500,height=700');
         }
-
-        return this.openedtab.document;
+        try {
+            returnVal = this.openedtab.document;
+            this.openedtab.focus();
+        } catch (e) {
+            this.openedtab.focus();
+        }
+        return returnVal || false;
     }
 
     handleConsentResponse(e) {
@@ -74,27 +117,63 @@ export class oAuth {
         if (typeof messageData.state === "undefined" || messageData.state !== this.uniqueId) {
             return;
         }
-        let expireTime = Math.round(new Date().getTime() / 1000) - 10 + messageData.expires_in;
+        let expireTime = now() - 10 + messageData.expires_in;
 
         this.saveToken(messageData.access_token, expireTime);
         this.openedtab.close();
+        this.consentPromise.resolve(messageData.access_token)
     }
 
     saveToken(token, expireDate) {
-        let currentTokens = window.localStorage.getItem('eventToCalendarOAuth');
+        let currentTokens = window.localStorage.getItem(this.storageKey);
         if (currentTokens === null || currentTokens.length === 0) {
-            currentTokens = {};
-
+            currentTokens = [];
         } else {
             currentTokens = JSON.parse(currentTokens);
         }
 
-        currentTokens[this.autorizationEndPoint] = {
-            scopes: this.params.scopes,
+        currentTokens.push({
+            scope: this.params.scope,
             expireDate: expireDate,
             token: token
-        };
+        });
+        window.localStorage.setItem(this.storageKey, JSON.stringify(currentTokens))
+    }
 
-        window.localStorage.setItem('eventToCalendarOAuth', JSON.stringify(currentTokens))
+    getToken(requiredScopes) {
+        let currentTokens = JSON.parse(window.localStorage.getItem(this.storageKey));
+        if (currentTokens === null) {
+            return false;
+        }
+        let tokensWithScopes = currentTokens.filter(token => {
+            return this.tokenIsValidForScope(token, requiredScopes)
+        });
+
+        let unexpired = tokensWithScopes.find(token => {
+            return now() < token.expireDate
+        });
+
+        if (typeof unexpired !== 'undefined') {
+            return unexpired;
+        }
+        //todo if we a token but it's expired refresh it don't ask for a new one
+
+
+        return false
+    }
+
+    tokenIsValidForScope(token, requiredScopes) {
+        let hasAllRequiredScopes = true;
+
+        if (requiredScopes.constructor === Array) {
+            for (let requiredScope of requiredScopes) {
+                hasAllRequiredScopes = hasAllRequiredScopes && token.scope.includes(requiredScope)
+            }
+        } else {
+            hasAllRequiredScopes = token.scope.includes(requiredScopes);
+
+        }
+
+        return hasAllRequiredScopes;
     }
 }

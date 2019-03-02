@@ -1,12 +1,34 @@
-/**
- * @var providers
- * @var template
- * @var details
- * @var  {object} providerData
- */
 import {stringToHtml} from "./helpers";
 
-export default class EventToCalendar {
+
+export class EventToCalendar {
+    /**
+     * @namespace
+     * @constructor
+     * @param {HTMLElement} element The buttons container
+     * @param  {Object} options
+     * @param {Template|string} options.template - The button template
+     * @param {AbstractProvider[]} options.providers - The calendar providers
+     * @param {Object} options.providerData - Additional data passed to  each provider should have the structure providerName:{key:vald}
+     * @param {Object} options.details - The event details object
+     * @param {string} [options.details.title=null] - The event title
+     * @param {string}  [options.details.description=null] - The event description
+     * @param {Date} options.details.startDate - The event start date
+     * @param {Date} options.details.endDate - The event end date
+     * @param {string} options.details.timezone - Valid Timezone String
+     * @param {string[]} [options.details.attachments=null] - Links to attached files
+     * @param {Object[]} [options.details.attendees] - Array with the attendees attributes
+     * @param {string} options.details.attendees[].email - Valid Email of the attendee
+     * @param {boolean} [options.details.attendees.optional]
+     * @param {string} [options.details.attendees.comment]
+     * @param {string} [options.details.attendees.responseStatus]
+     * @param {boolean} [options.details.attendees.guestsCanInviteOthers]
+     * @param {boolean} [options.details.attendees.guestsCanModify]
+     * @param {boolean} [options.details.attendees.guestsCanSeeOtherGuests]
+     * @param {'confirmed' | 'tentative' | 'cancelled' } [options.details.status]
+     * @param {'opaque' | 'transparent'} [options.details.transparency=opaque]
+     * @param {'default' | 'public' | 'private' } [options.details.visibility=opaque]
+     */
     constructor(element, options) {
         this.element = element;
         this.providers = [];
