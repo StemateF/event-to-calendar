@@ -1,0 +1,852 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>EventToCalendar - eventToCalendar.js - An open source Js library for generating add to calendar
+        buttons</title>
+
+    <meta content="eventToCalendar.js - An open source Js library for generating add to calendar buttons"
+          name="description"/>
+
+
+    <meta content="eventToCalendar.js" property="og:title"/>
+    <meta content="website" property="og:type"/>
+    <meta content="" property="og:image"/>
+    <meta content="eventToCalendar.js" property="og:site_name"/>
+    <meta content="" property="og:url"/>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav class="wrap">
+
+    <input id="nav-search" placeholder="Search" type="text"/>
+
+    <h2><a href="index.html">Home</a></h2>
+    <h2><a class="menu-item" href="https://github.com/StemateF/event-to-calendar" id="website_link" target="_blank">Project
+        Website</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="EventToCalendar_EventToCalendar.html">EventToCalendar</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#stringToHtml">stringToHtml</a></li>
+    </ul>
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">EventToCalendar</h1>
+
+
+    <section>
+
+        <header>
+
+            <h2>
+                EventToCalendar
+            </h2>
+
+
+        </header>
+
+        <article>
+
+            <div class="container-overview">
+
+
+                <h4 class="name" id="EventToCalendar"><span class="type-signature"></span>new EventToCalendar<span
+                        class="signature">(element, options)</span><span class="type-signature"></span></h4>
+
+
+                <dl class="details">
+
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a href="eventToCalendar.js.html">eventToCalendar.js</a>, <a
+                                    href="eventToCalendar.js.html#line32">line 32</a>
+                            </li>
+                        </ul>
+                    </dd>
+
+
+                </dl>
+
+
+                <h5>Parameters:</h5>
+
+
+                <table class="params">
+                    <thead>
+                    <tr>
+
+                        <th>Name</th>
+
+
+                        <th>Type</th>
+
+
+                        <th class="last">Description</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+
+                    <tr>
+
+                        <td class="name"><code>element</code></td>
+
+
+                        <td class="type">
+
+
+                            <span class="param-type">HTMLElement</span>
+
+
+                        </td>
+
+
+                        <td class="description last"><p>The buttons container</p></td>
+                    </tr>
+
+
+                    <tr>
+
+                        <td class="name"><code>options</code></td>
+
+
+                        <td class="type">
+
+
+                            <span class="param-type">Object</span>
+
+
+                        </td>
+
+
+                        <td class="description last">
+                            <h6>Properties</h6>
+
+
+                            <table class="params">
+                                <thead>
+                                <tr>
+
+                                    <th>Name</th>
+
+
+                                    <th>Type</th>
+
+
+                                    <th class="last">Description</th>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+
+
+                                <tr>
+
+                                    <td class="name"><code>template</code></td>
+
+
+                                    <td class="type">
+
+
+                                        <span class="param-type">Template</span>
+                                        |
+
+                                        <span class="param-type">string</span>
+
+
+                                    </td>
+
+
+                                    <td class="description last"><p>The button template</p></td>
+                                </tr>
+
+
+                                <tr>
+
+                                    <td class="name"><code>providers</code></td>
+
+
+                                    <td class="type">
+
+
+                                        <span class="param-type">Array.&lt;AbstractProvider></span>
+
+
+                                    </td>
+
+
+                                    <td class="description last"><p>The calendar providers</p></td>
+                                </tr>
+
+
+                                <tr>
+
+                                    <td class="name"><code>providerData</code></td>
+
+
+                                    <td class="type">
+
+
+                                        <span class="param-type">Object</span>
+
+
+                                    </td>
+
+
+                                    <td class="description last"><p>Additional data passed to each provider should have
+                                        the structure providerName:{key:vald}</p></td>
+                                </tr>
+
+
+                                <tr>
+
+                                    <td class="name"><code>details</code></td>
+
+
+                                    <td class="type">
+
+
+                                        <span class="param-type">Object</span>
+
+
+                                    </td>
+
+
+                                    <td class="description last"><p>The event details object</p>
+                                        <h6>Properties</h6>
+
+
+                                        <table class="params">
+                                            <thead>
+                                            <tr>
+
+                                                <th>Name</th>
+
+
+                                                <th>Type</th>
+
+
+                                                <th>Attributes</th>
+
+
+                                                <th>Default</th>
+
+
+                                                <th class="last">Description</th>
+                                            </tr>
+                                            </thead>
+
+                                            <tbody>
+
+
+                                            <tr>
+
+                                                <td class="name"><code>title</code></td>
+
+
+                                                <td class="type">
+
+
+                                                    <span class="param-type">string</span>
+
+
+                                                </td>
+
+
+                                                <td class="attributes">
+
+                                                    &lt;optional><br>
+
+
+                                                </td>
+
+
+                                                <td class="default">
+
+                                                    <code>null</code>
+
+                                                </td>
+
+
+                                                <td class="description last"><p>The event title</p></td>
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td class="name"><code>description</code></td>
+
+
+                                                <td class="type">
+
+
+                                                    <span class="param-type">string</span>
+
+
+                                                </td>
+
+
+                                                <td class="attributes">
+
+                                                    &lt;optional><br>
+
+
+                                                </td>
+
+
+                                                <td class="default">
+
+                                                    <code>null</code>
+
+                                                </td>
+
+
+                                                <td class="description last"><p>The event description</p></td>
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td class="name"><code>startDate</code></td>
+
+
+                                                <td class="type">
+
+
+                                                    <span class="param-type">Date</span>
+
+
+                                                </td>
+
+
+                                                <td class="attributes">
+
+
+                                                </td>
+
+
+                                                <td class="default">
+
+                                                </td>
+
+
+                                                <td class="description last"><p>The event start date</p></td>
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td class="name"><code>endDate</code></td>
+
+
+                                                <td class="type">
+
+
+                                                    <span class="param-type">Date</span>
+
+
+                                                </td>
+
+
+                                                <td class="attributes">
+
+
+                                                </td>
+
+
+                                                <td class="default">
+
+                                                </td>
+
+
+                                                <td class="description last"><p>The event end date</p></td>
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td class="name"><code>timezone</code></td>
+
+
+                                                <td class="type">
+
+
+                                                    <span class="param-type">string</span>
+
+
+                                                </td>
+
+
+                                                <td class="attributes">
+
+
+                                                </td>
+
+
+                                                <td class="default">
+
+                                                </td>
+
+
+                                                <td class="description last"><p>Valid Timezone String</p></td>
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td class="name"><code>attachments</code></td>
+
+
+                                                <td class="type">
+
+
+                                                    <span class="param-type">Array.&lt;string></span>
+
+
+                                                </td>
+
+
+                                                <td class="attributes">
+
+                                                    &lt;optional><br>
+
+
+                                                </td>
+
+
+                                                <td class="default">
+
+                                                    <code>null</code>
+
+                                                </td>
+
+
+                                                <td class="description last"><p>Links to attached files</p></td>
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td class="name"><code>attendees</code></td>
+
+
+                                                <td class="type">
+
+
+                                                    <span class="param-type">Array.&lt;Object></span>
+
+
+                                                </td>
+
+
+                                                <td class="attributes">
+
+                                                    &lt;optional><br>
+
+
+                                                </td>
+
+
+                                                <td class="default">
+
+                                                </td>
+
+
+                                                <td class="description last"><p>Array with the attendees attributes</p>
+                                                    <h6>Properties</h6>
+
+
+                                                    <table class="params">
+                                                        <thead>
+                                                        <tr>
+
+                                                            <th>Name</th>
+
+
+                                                            <th>Type</th>
+
+
+                                                            <th>Attributes</th>
+
+
+                                                            <th class="last">Description</th>
+                                                        </tr>
+                                                        </thead>
+
+                                                        <tbody>
+
+
+                                                        <tr>
+
+                                                            <td class="name"><code>email</code></td>
+
+
+                                                            <td class="type">
+
+
+                                                                <span class="param-type">string</span>
+
+
+                                                            </td>
+
+
+                                                            <td class="attributes">
+
+
+                                                            </td>
+
+
+                                                            <td class="description last"><p>Valid Email of the
+                                                                attendee</p></td>
+                                                        </tr>
+
+
+                                                        <tr>
+
+                                                            <td class="name"><code>optional</code></td>
+
+
+                                                            <td class="type">
+
+
+                                                                <span class="param-type">boolean</span>
+
+
+                                                            </td>
+
+
+                                                            <td class="attributes">
+
+                                                                &lt;optional><br>
+
+
+                                                            </td>
+
+
+                                                            <td class="description last"></td>
+                                                        </tr>
+
+
+                                                        <tr>
+
+                                                            <td class="name"><code>comment</code></td>
+
+
+                                                            <td class="type">
+
+
+                                                                <span class="param-type">string</span>
+
+
+                                                            </td>
+
+
+                                                            <td class="attributes">
+
+                                                                &lt;optional><br>
+
+
+                                                            </td>
+
+
+                                                            <td class="description last"></td>
+                                                        </tr>
+
+
+                                                        <tr>
+
+                                                            <td class="name"><code>responseStatus</code></td>
+
+
+                                                            <td class="type">
+
+
+                                                                <span class="param-type">string</span>
+
+
+                                                            </td>
+
+
+                                                            <td class="attributes">
+
+                                                                &lt;optional><br>
+
+
+                                                            </td>
+
+
+                                                            <td class="description last"></td>
+                                                        </tr>
+
+
+                                                        <tr>
+
+                                                            <td class="name"><code>guestsCanInviteOthers</code></td>
+
+
+                                                            <td class="type">
+
+
+                                                                <span class="param-type">boolean</span>
+
+
+                                                            </td>
+
+
+                                                            <td class="attributes">
+
+                                                                &lt;optional><br>
+
+
+                                                            </td>
+
+
+                                                            <td class="description last"></td>
+                                                        </tr>
+
+
+                                                        <tr>
+
+                                                            <td class="name"><code>guestsCanModify</code></td>
+
+
+                                                            <td class="type">
+
+
+                                                                <span class="param-type">boolean</span>
+
+
+                                                            </td>
+
+
+                                                            <td class="attributes">
+
+                                                                &lt;optional><br>
+
+
+                                                            </td>
+
+
+                                                            <td class="description last"></td>
+                                                        </tr>
+
+
+                                                        <tr>
+
+                                                            <td class="name"><code>guestsCanSeeOtherGuests</code></td>
+
+
+                                                            <td class="type">
+
+
+                                                                <span class="param-type">boolean</span>
+
+
+                                                            </td>
+
+
+                                                            <td class="attributes">
+
+                                                                &lt;optional><br>
+
+
+                                                            </td>
+
+
+                                                            <td class="description last"></td>
+                                                        </tr>
+
+
+                                                        </tbody>
+                                                    </table>
+
+                                                </td>
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td class="name"><code>status</code></td>
+
+
+                                                <td class="type">
+
+
+                                                    <span class="param-type">'confirmed'</span>
+                                                    |
+
+                                                    <span class="param-type">'tentative'</span>
+                                                    |
+
+                                                    <span class="param-type">'cancelled'</span>
+
+
+                                                </td>
+
+
+                                                <td class="attributes">
+
+                                                    &lt;optional><br>
+
+
+                                                </td>
+
+
+                                                <td class="default">
+
+                                                </td>
+
+
+                                                <td class="description last"></td>
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td class="name"><code>transparency</code></td>
+
+
+                                                <td class="type">
+
+
+                                                    <span class="param-type">'opaque'</span>
+                                                    |
+
+                                                    <span class="param-type">'transparent'</span>
+
+
+                                                </td>
+
+
+                                                <td class="attributes">
+
+                                                    &lt;optional><br>
+
+
+                                                </td>
+
+
+                                                <td class="default">
+
+                                                    <code>opaque</code>
+
+                                                </td>
+
+
+                                                <td class="description last"></td>
+                                            </tr>
+
+
+                                            <tr>
+
+                                                <td class="name"><code>visibility</code></td>
+
+
+                                                <td class="type">
+
+
+                                                    <span class="param-type">'default'</span>
+                                                    |
+
+                                                    <span class="param-type">'public'</span>
+                                                    |
+
+                                                    <span class="param-type">'private'</span>
+
+
+                                                </td>
+
+
+                                                <td class="attributes">
+
+                                                    &lt;optional><br>
+
+
+                                                </td>
+
+
+                                                <td class="default">
+
+                                                    <code>opaque</code>
+
+                                                </td>
+
+
+                                                <td class="description last"></td>
+                                            </tr>
+
+
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+
+
+                                </tbody>
+                            </table>
+
+                        </td>
+                    </tr>
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+
+        </article>
+
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 02 2019 13:05:19
+    GMT+0200 (Eastern European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/jquery-3.1.1.min.js"></script>
+
+<script src="scripts/search.js"></script>
+
+
+<script src="scripts/collapse.js"></script>
+
+
+</body>
+</html>

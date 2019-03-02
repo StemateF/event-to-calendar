@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>providers/google.js - eventToCalendar.js - An open source Js library for generating add to calendar
+        buttons</title>
+
+    <meta content="eventToCalendar.js - An open source Js library for generating add to calendar buttons"
+          name="description"/>
+
+
+    <meta content="eventToCalendar.js" property="og:title"/>
+    <meta content="website" property="og:type"/>
+    <meta content="" property="og:image"/>
+    <meta content="eventToCalendar.js" property="og:site_name"/>
+    <meta content="" property="og:url"/>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav class="wrap">
+
+    <input id="nav-search" placeholder="Search" type="text"/>
+
+    <h2><a href="index.html">Home</a></h2>
+    <h2><a class="menu-item" href="https://github.com/StemateF/event-to-calendar" id="website_link" target="_blank">Project
+        Website</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="EventToCalendar_EventToCalendar.html">EventToCalendar</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#stringToHtml">stringToHtml</a></li>
+    </ul>
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">providers/google.js</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {AbstractProvider} from './abstractProvider'
+import {oAuth} from "../helpers/oAuth";
+import {stringToHtml} from "../helpers";
+
+
+const authorizationEndPoint = 'https://accounts.google.com/o/oauth2/v2/auth';
+const scopes = [
+    'https://www.googleapis.com/auth/calendar.events',
+    'https://www.googleapis.com/auth/calendar'
+];
+const insertEventEndPoint = 'https://www.googleapis.com/calendar/v3/calendars/primary/events';
+export default class Google extends AbstractProvider {
+    constructor(eventDetails, providerData) {
+        super();
+
+        this.additionalData = providerData;
+        this.eventDetails = eventDetails;
+        this.auth = new oAuth(
+            authorizationEndPoint,
+            {
+                client_id: this.providerData.clientId,
+                redirect_uri: 'http://localhost:8080',
+                response_type: 'token',
+                scope: scopes
+            },
+            this.storageKey
+        )
+
+    }
+
+    static get providerName() {
+        return 'google';
+    }
+
+    get providerData() {
+        return this.additionalData;
+    }
+
+    /**
+     * @var  stringToHtml {HTMLElement}
+     */
+    render() {
+        let htmlElem = stringToHtml(`&lt;li>Google&lt;/li>`);
+        htmlElem.addEventListener('click', this.addEvent.bind(this));
+        return htmlElem
+    }
+
+    get providerEventDetails() {
+        let formatedEvent = {
+            summary: this.eventDetails.title,
+            description: this.eventDetails.description,
+            start: {
+                date: this.eventDetails.startDate,
+                timezone: this.eventDetails.timezone,
+            },
+            end: {
+                date: this.eventDetails.endDate,
+                timezone: this.eventDetails.timezone,
+            },
+            location: this.eventDetails.location,
+            source: {
+                title: this.eventDetails.source.title,
+                url: this.eventDetails.source.url
+            },
+            status: this.eventDetails.status,
+            transparency: this.eventDetails.transparency,
+            visibility: this.eventDetails.visibility,
+            attendees: [],
+            attachments: this.eventDetails.attachments,
+        };
+        if (typeof this.eventDetails.attendees !== "undefined" &amp;&amp; this.eventDetails.attendees.constructor === Array) {
+            this.eventDetails.attendees.forEach(attendee => {
+                formatedEvent.attendees.push({
+                    email: attendee.email,
+                    optional: attendee.optional,
+                    comment: attendee.comment,
+                    responseStatus: attendee.responseStatus,
+                    guestsCanInviteOthers: attendee.guestsCanInviteOthers,
+                    guestsCanModify: attendee.guestsCanModify,
+                    guestsCanSeeOtherGuests: attendee.guestsCanSeeOtherGuests,
+                })
+            })
+        }
+
+        return formatedEvent;
+    }
+
+    addEvent() {
+        let event = {
+            'summary': 'Google I/O 2015',
+            'location': '800 Howard St., San Francisco, CA 94103',
+            'description': 'A chance to hear more about Google\'s developer products.',
+            'start': {
+                'dateTime': '2019-03-03T09:00:00-07:00',
+                'timeZone': 'America/Los_Angeles'
+            },
+            'end': {
+                'dateTime': '2019-03-03T17:00:00-07:00',
+                'timeZone': 'America/Los_Angeles'
+            },
+            'recurrence': [
+                'RRULE:FREQ=DAILY;COUNT=2'
+            ],
+            'attendees': [
+                {'email': 'lpage@example.com'},
+                {'email': 'sbrin@example.com'}
+            ],
+            'reminders': {
+                'useDefault': false,
+                'overrides': [
+                    {'method': 'email', 'minutes': 24 * 60},
+                    {'method': 'popup', 'minutes': 10}
+                ]
+            }
+        };
+        console.table(event);
+        console.table(this.providerEventDetails);
+        this.auth.send(insertEventEndPoint, this.providerEventDetails);
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 02 2019 13:05:19
+    GMT+0200 (Eastern European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/jquery-3.1.1.min.js"></script>
+
+<script src="scripts/search.js"></script>
+
+
+<script src="scripts/collapse.js"></script>
+
+
+</body>
+</html>

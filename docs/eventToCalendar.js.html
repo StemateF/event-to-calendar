@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="utf-8">
+    <title>eventToCalendar.js - eventToCalendar.js - An open source Js library for generating add to calendar
+        buttons</title>
+
+    <meta content="eventToCalendar.js - An open source Js library for generating add to calendar buttons"
+          name="description"/>
+
+
+    <meta content="eventToCalendar.js" property="og:title"/>
+    <meta content="website" property="og:type"/>
+    <meta content="" property="og:image"/>
+    <meta content="eventToCalendar.js" property="og:site_name"/>
+    <meta content="" property="og:url"/>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc.css" rel="stylesheet" type="text/css">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+</head>
+<body>
+
+<input class="nav-trigger" id="nav-trigger" type="checkbox"/>
+<label class="navicon-button x" for="nav-trigger">
+    <div class="navicon"></div>
+</label>
+
+<label class="overlay" for="nav-trigger"></label>
+
+<nav class="wrap">
+
+    <input id="nav-search" placeholder="Search" type="text"/>
+
+    <h2><a href="index.html">Home</a></h2>
+    <h2><a class="menu-item" href="https://github.com/StemateF/event-to-calendar" id="website_link" target="_blank">Project
+        Website</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="EventToCalendar_EventToCalendar.html">EventToCalendar</a></li>
+    </ul>
+    <h3>Global</h3>
+    <ul>
+        <li><a href="global.html#stringToHtml">stringToHtml</a></li>
+    </ul>
+</nav>
+
+<div id="main">
+
+    <h1 class="page-title">eventToCalendar.js</h1>
+
+
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {stringToHtml} from "./helpers";
+
+
+export class EventToCalendar {
+    /**
+     * @namespace
+     * @constructor
+     * @param {HTMLElement} element The buttons container
+     * @param  {Object} options
+     * @param {Template|string} options.template - The button template
+     * @param {AbstractProvider[]} options.providers - The calendar providers
+     * @param {Object} options.providerData - Additional data passed to  each provider should have the structure providerName:{key:vald}
+     * @param {Object} options.details - The event details object
+     * @param {string} [options.details.title=null] - The event title
+     * @param {string}  [options.details.description=null] - The event description
+     * @param {Date} options.details.startDate - The event start date
+     * @param {Date} options.details.endDate - The event end date
+     * @param {string} options.details.timezone - Valid Timezone String
+     * @param {string[]} [options.details.attachments=null] - Links to attached files
+     * @param {Object[]} [options.details.attendees] - Array with the attendees attributes
+     * @param {string} options.details.attendees[].email - Valid Email of the attendee
+     * @param {boolean} [options.details.attendees.optional]
+     * @param {string} [options.details.attendees.comment]
+     * @param {string} [options.details.attendees.responseStatus]
+     * @param {boolean} [options.details.attendees.guestsCanInviteOthers]
+     * @param {boolean} [options.details.attendees.guestsCanModify]
+     * @param {boolean} [options.details.attendees.guestsCanSeeOtherGuests]
+     * @param {'confirmed' | 'tentative' | 'cancelled' } [options.details.status]
+     * @param {'opaque' | 'transparent'} [options.details.transparency=opaque]
+     * @param {'default' | 'public' | 'private' } [options.details.visibility=opaque]
+     */
+    constructor(element, options) {
+        this.element = element;
+        this.providers = [];
+        this.element.eventToCalendar = this;
+        this.mergeOptions(options);
+        this.init()
+    }
+
+    mergeOptions(options) {
+        let defaults = {
+            providers: [],
+            template: '',
+            details: {},
+            providersData: {}
+
+        };
+
+        Object.entries(defaults).forEach((item) => {
+            this[item[0]] = typeof options[item[0]] === 'undefined'
+                ? item[1]
+                : options[item[0]]
+        })
+    }
+
+    renderParent() {
+        this.parentWrapper = stringToHtml(this.template);
+        this.element.append(this.parentWrapper)
+    }
+
+    renderProvider(provider, index) {
+        this.providers[index] = new provider(this.details, this.providersData[provider.providerName]);
+        let providerTemplate = this.providers[index].render();
+
+        if (typeof providerTemplate === 'string') {
+            providerTemplate = stringToHtml(providerTemplate);
+        }
+
+        this.parentWrapper.append(providerTemplate);
+    }
+
+    renderProviders() {
+        this.providers.forEach(this.renderProvider.bind(this))
+    }
+
+    init() {
+        this.renderParent();
+        this.renderProviders()
+    }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sat Mar 02 2019 13:05:19
+    GMT+0200 (Eastern European Standard Time) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+
+<script src="scripts/jquery-3.1.1.min.js"></script>
+
+<script src="scripts/search.js"></script>
+
+
+<script src="scripts/collapse.js"></script>
+
+
+</body>
+</html>
